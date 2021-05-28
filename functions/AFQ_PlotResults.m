@@ -7,7 +7,10 @@ fgNames={'Left Thalmic Radiation','Right Thalmic Radiation','Left Corticospinal'
 %% calc and plot
 cutZ=norminv(cutoff*.01);
 cutZ2=norminv([.25 .75]);
-
+% norminv()是标准累积分布函数（cdf）的逆，但这里的自变量是啥？是纤维到纤维束中心的距离吗？
+% x = norminv(p)
+% x = norminv(p,mu)
+% x = norminv(p,mu,sigma)
 %first collect value of interet
 for jj=1:length(fgNames)
     figure(jj);hold on;
@@ -15,10 +18,14 @@ for jj=1:length(fgNames)
     x=[1:numberOfNodes fliplr(1:numberOfNodes)];
     y=vertcat(norms.meanFA(:,jj)+max(cutZ)*norms.sdFA(:,jj), flipud(norms.meanFA(:,jj)+min(cutZ)*norms.sdFA(:,jj)));
     fill(x,y, [.6 .6 .6]);
+    % is 'cutoff' a value or a range? probably a range as its 'max' and 'min' exist in the syntax
+    % vertcat() is used to concatemate the 2 matrixes vertically
     clear y
     y=vertcat(norms.meanFA(:,jj)+max(cutZ2)*norms.sdFA(:,jj), flipud(norms.meanFA(:,jj)+min(cutZ2)*norms.sdFA(:,jj)));
     fill(x,y, [.3 .3 .3]);
     clear y
+    %% cutZ和cutZ2有什么区别？cutoff是什么？这一部分是计算每个node的FA值（含标准差）
+    %% x和y为什么需要把向量顺序倒置后相加？
     plot(norms.meanFA(:,jj),'-','Color','k','LineWidth',5);
     axis([1 numberOfNodes .2 .9]);
     xlabel('Location','fontName','Times','fontSize',14);
@@ -30,6 +37,7 @@ end
 %% add patients to plot
 % we will only plot premies who are abnormal on at least 1 tract
 c=hsv(sum(abn));
+% hsv() is a colormap
 c=c./1.4;
 c(2:2:end,:)=c(2:2:end,:)./1.5;
 for ii=1:size(patient_data(1).FA,1)
