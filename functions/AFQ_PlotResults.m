@@ -7,7 +7,7 @@ fgNames={'Left Thalmic Radiation','Right Thalmic Radiation','Left Corticospinal'
 %% calc and plot
 cutZ=norminv(cutoff*.01);
 cutZ2=norminv([.25 .75]);
-% norminv()是标准累积分布函数（cdf）的逆，但这里的自变量是啥？是纤维到纤维束中心的距离吗？
+
 % x = norminv(p)
 % x = norminv(p,mu)
 % x = norminv(p,mu,sigma)
@@ -24,8 +24,7 @@ for jj=1:length(fgNames)
     y=vertcat(norms.meanFA(:,jj)+max(cutZ2)*norms.sdFA(:,jj), flipud(norms.meanFA(:,jj)+min(cutZ2)*norms.sdFA(:,jj)));
     fill(x,y, [.3 .3 .3]);
     clear y
-    %% cutZ和cutZ2有什么区别？cutoff是什么？这一部分是计算每个node的FA值（含标准差）
-    %% x和y为什么需要把向量顺序倒置后相加？
+   
     plot(norms.meanFA(:,jj),'-','Color','k','LineWidth',5);
     axis([1 numberOfNodes .2 .9]);
     xlabel('Location','fontName','Times','fontSize',14);
